@@ -1,0 +1,82 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO.Ports;
+
+namespace Parte2_Arduino
+{
+    class Program
+    {
+        static SerialPort Arduino = new SerialPort("COM27", 9600);
+        static void Main(string[] args)
+        {
+
+            int num;
+            Arduino.Parity = Parity.None;
+            Arduino.StopBits = StopBits.One;
+            Arduino.DataBits = 8;
+            Arduino.Handshake = Handshake.None;
+            Arduino.RtsEnable = true;
+
+            Arduino = Open();
+            // Grupo de Trabajo: Fatima Hernandez, Sofia Sabán, Keyli Solis
+            do
+            {
+                Console.WriteLine("A continuación escoja la acción que desea llevar a cabo ");
+                Console.WriteLine("1. Encender LED color rojo ");
+                Console.WriteLine("2. Apagar LED color rojo ");
+                Console.WriteLine("3. Encender LED color naranja ");
+                Console.WriteLine("4. Apagar LED color naranja: ");
+                Console.WriteLine("5. Salir" );
+                num = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+
+                Arduino.Open();
+
+                if (num == 1)
+                {
+                    Console.WriteLine("Com abierto");
+                    byte[] data = Encoding.ASCII.GetBytes("z");
+                    Arduino.Write(data, 0, data.Length);
+                    Console.Clear();
+                }
+                else if(num == 2)
+                {
+                    Console.WriteLine("Com cerrado");
+                    Console.ReadLine();
+                    num = 1;
+                    Console.Clear();
+                }
+
+                if (num==3)
+                {
+                    Console.WriteLine("Com abierto");
+                    byte[] data1 = Encoding.ASCII.GetBytes("p");
+                    Arduino.Write(data1, 0, data1.Length);
+
+                    Console.ReadLine();
+                    num = 1;
+                    Console.Clear();
+                }
+                else if (num==4)
+                {
+                    Console.WriteLine("Com cerrado");
+                    Console.ReadLine();
+                    num = 1;
+                    Console.Clear();
+                }
+
+                if (num==5)
+                {
+                    Console.Clear();
+                    break;
+                }
+                
+            } while (num == 1);
+            Console.ReadKey();
+            Arduino.Close();
+        }
+    }
+}
